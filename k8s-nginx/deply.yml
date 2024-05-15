@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx-app
+  template:
+    metadata:
+      labels:
+        app: nginx-app
+    spec:
+      containers:
+        - name: nginx-app
+          image: devopskarthik123/nginx-kub:v03
+          ports:
+            - containerPort: 5000
+          #volumeMounts:
+          #  - name: data-volume
+          #    mountPath: /usr/share/nginx/html
+
+      #volumes:
+      #  - name: data-volume
+      #    persistentVolumeClaim:
+      #      claimName: devops-pvc

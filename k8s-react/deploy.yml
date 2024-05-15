@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: demo-react-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: demo-react-app
+  template:
+    metadata:
+      labels:
+        app: demo-react-app
+    spec:
+      containers:
+        - name: demo-react-app
+          image: devopskarthik123/react:react
+          ports:
+            - containerPort: 3000
+          resources:
+            limits:
+              cpu: "1"
+              memory: "1Gi"
+            requests:
+              cpu: "500m"
+              memory: "500Mi"
+              #          volumeMounts:
+              #- name: data-volume
+              #mountPath: /tmp/src
+              #volumes:
+              #- name: data-volume
+              #persistentVolumeClaim:
+              #claimName: react-pvc

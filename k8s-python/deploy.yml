@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: python-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: python-app
+  template:
+    metadata:
+      labels:
+        app: python-app
+    spec:
+      containers:
+        - name: python-app
+          image: devopskarthik123/python-kub:v02
+          ports:
+            - containerPort: 4000
+          env:
+            - name: ME_CONFIG_PYTHON_ADMINUSERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: python-secret
+                  key: python-root-username
+            - name: ME_CONFIG_PYHTON_ADMINPASSWORD
+              valueFrom: 
+                secretKeyRef:
+                  name: python-secret
+                  key: python-root-password
+            - name: ME_CONFIG_PYTHON_SERVER
+              valueFrom: 
+                configMapKeyRef:
+                  name: python-configmap
+                  key: database_url
+          resources:
+            limits:
+              cpu: "500m"
+              memory: "500Mi"
+            requests:
+              cpu: "500m"
+              memory: "500Mi"
+          volumeMounts:
+            - name: data-volume
+              mountPath: /tmp
+      volumes:
+        - name: data-volume
+          persistentVolumeClaim:
+            claimName: python-pvc
